@@ -19,8 +19,8 @@ public class EratosthenesPrimeNumberGenerator implements PrimeNumberGeneratorStr
 	
 	@Override
 	public List<Integer> execute(int lowerBound, int upperBound) {
-		boolean[] isPrime = initializePrimeArray(upperBound);
-		
+		ArrayList<Boolean> isPrime = initializePrimeArray(upperBound);
+
 		int prime = 2;
 		
 		while(prime*prime <= upperBound){ //as per naive2 implementation, we only have to check primes up to the square route of the upperBound
@@ -44,10 +44,10 @@ public class EratosthenesPrimeNumberGenerator implements PrimeNumberGeneratorStr
 	 * @param prime
 	 * @param upperBound
 	 */
-	private void markOffAllMultiplesOfPrime(boolean[] isPrime, int prime, int upperBound)
+	private void markOffAllMultiplesOfPrime(ArrayList<Boolean> isPrime, int prime, int upperBound)
 	{
 		for(int i = 2*prime; i < upperBound; i += prime){
-			isPrime[i] = false; //mark this multiple of a prime as a non-prime
+			isPrime.set(i, false); //mark this multiple of a prime as a non-prime
 		}
 		
 		//isPrime is passed by reference, so no need to return anything
@@ -58,12 +58,12 @@ public class EratosthenesPrimeNumberGenerator implements PrimeNumberGeneratorStr
 	 * 
 	 * @return the next prime number, but if no further prime number is found it returns the starting prime number
 	 */
-	private int findNextAvailablePrime(int prime, int upperBound, boolean[] isPrime)
+	private int findNextAvailablePrime(int prime, int upperBound, ArrayList<Boolean> isPrime)
 	{
 		//find next prime number in index. start at the next number from the last prime
 		for(int j = prime+1; j < upperBound; j++)
 		{
-			if(isPrime[j])
+			if(isPrime.get(j))
 			{
 				return j;
 			}
@@ -75,12 +75,12 @@ public class EratosthenesPrimeNumberGenerator implements PrimeNumberGeneratorStr
 	/**
 	 * Converts the boolean array, where a true indicates a prime number, into a list of just the prime integers
 	 */
-	private List<Integer> convertBooleanArrayToIntegerList(boolean[] primeArray, int lowerBound, int upperBound)
+	private List<Integer> convertBooleanArrayToIntegerList(ArrayList<Boolean> primeArray, int lowerBound, int upperBound)
 	{
 		List<Integer> result = new ArrayList<Integer>();
 		for(int i = lowerBound+1; i < upperBound; i++)
 		{
-			if(primeArray[i])
+			if(primeArray.get(i))
 			{
 				result.add(i);
 			}
@@ -89,14 +89,14 @@ public class EratosthenesPrimeNumberGenerator implements PrimeNumberGeneratorStr
 		return result;
 	}
 	
-	private boolean[] initializePrimeArray(int upperBound)
+	private ArrayList<Boolean> initializePrimeArray(int upperBound)
 	{
-		boolean[] primeArray = new boolean[upperBound];
-		primeArray[0] = false; //0 is not a prime
-		primeArray[1] = false; //1 is not a prime
+		ArrayList<Boolean> primeArray = new ArrayList<>();
+		primeArray.add(false);
+		primeArray.add(false);
 		for(int i = 2; i < upperBound; i++)
 		{
-			primeArray[i] = true;
+			primeArray.add(true);
 		}
 		
 		return primeArray;
